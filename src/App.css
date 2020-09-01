@@ -3,8 +3,15 @@
 }
 
 .body{
-  background-color: green;
+  background-color: red;
 } 
+
+.app{
+  display: flex;
+  justify-content: space-evenly;
+  padding: 30px;
+
+}
 
 .app_header{
   display: flex;
@@ -13,7 +20,17 @@
   justify-content: space-between;
 }
 
+.app__left{
+  flex: 0.7;
+}
+
 .app__stats{
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+@media (max-width: 990px){
+  .app{
+    flex-direction: column;
+  }
 }

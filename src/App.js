@@ -3,6 +3,7 @@ import { MenuItem, FormControl, Select, Card, CardContent } from "@material-ui/c
 import './App.css';
 import InfoBox from './InfoBox';
 import Map from "./Map";
+import Table from "./Table";
 
 
 
@@ -11,14 +12,15 @@ function App() {
   const [countries, setCountries] =useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] =useState({});
+  const [tableData, setTableData] =useState([]);
 
   useEffect(()=>{
     fetch("https://disease.sh/v3/covid-19/all")
-    .then(response=>response.json())
-    .then(data =>{
+    .then((response) => response.json())
+    .then((data) => {
       setCountryInfo(data);
-    })
-  },[])
+    });
+  },[]);
 
   useEffect(() => {
     const getCountriesData= async()=>{
@@ -32,6 +34,7 @@ function App() {
           }
         ));
 
+        setTableData(data);
         setCountries(countries);
 
       });
@@ -97,6 +100,7 @@ function App() {
 
         <CardContent>
           <h3>Live Cases by country</h3>
+          <Table countries={tableData} />
           <h3>Worldwide new cases</h3>
         </CardContent>
 

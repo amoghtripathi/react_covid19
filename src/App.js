@@ -6,14 +6,19 @@ import Map from "./Map";
 import Table from "./Table";
 import {sortData} from "./util";
 import LineGraph from "./LineGraph";
+import "leaflet/dist/leaflet.css";
 
 
 function App() {
 
-  const [countries, setCountries] =useState([]);
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] =useState({});
+  const [countries, setCountries] =useState([]);
+  const [mapCountries, setMapCountries ] = useState([]);
   const [tableData, setTableData] =useState([]);
+  const [casesType, setCasesType] = useState("cases");
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [mapZoom, setMapZoom ] = useState(3);
 
   useEffect(()=>{
     fetch("https://disease.sh/v3/covid-19/all")
@@ -35,15 +40,15 @@ function App() {
           }
         ));
 
-        const sortedData = sortData(data);
+        let sortedData = sortData(data);
         setTableData(sortedData);
+        setMapCountries(data);
         setCountries(countries);
 
       });
     };
 
     getCountriesData();
-
   }, []);
 
   const onCountryChange = async(event)=>{
@@ -55,21 +60,17 @@ function App() {
 
     await fetch(url)
     .then(response =>  response.json())
-    .then(data => {
+    .then((data) => {
       setCountry(countryCode);
-
-
       setCountryInfo(data);
-    })
-
-    setCountry(countryCode);
+      setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+      setMapZoom(4);
+    });
   };
 
   return (
     <div className="app">
-     
       <div className="app__left">
-
         <div className="app_header">
           <h1>Chinese Virus</h1>
           <FormControl className="app_dropdown">
@@ -86,15 +87,31 @@ function App() {
         <div className="app__stats">
 
           {/* 3 info boxes  */}
-          <InfoBox title="CoronaVirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases}/>
-          
-          <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered}/>
+          <InfoBox 
+            title="CoronaVirus Cases"
+            cases={countryInfo.todayCases} 
+            total={countryInfo.cases}/>
+            
+          <InfoBox 
+            title="Recovered" 
+            cases={countryInfo.todayRecovered} 
+            total={countryInfo.recovered}
+            />
 
-          <InfoBox title="Deaths" cases={countryInfo.todayDeaths} total={countryInfo.deaths}/>
+          <InfoBox 
+            title="Deaths" 
+            cases={countryInfo.todayDeaths} 
+            total={countryInfo.deaths}
+            />
 
         </div>
 
-        <Map />
+        <Map
+          countries={mapCountries}
+          casesType={casesType}
+          center={mapCenter}
+          zoom={mapZoom}
+         />
         
       </div> 
       
@@ -105,9 +122,9 @@ function App() {
           
           <Table countries={tableData} />
           
-          <h3>Worldwide new cases</h3>
+              <h3>Worldwide new {casesType}</h3>
 
-          <LineGraph />
+          <LineGraph casesType={casesType}/>
 
         </CardContent>
 

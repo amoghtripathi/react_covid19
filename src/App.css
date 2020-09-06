@@ -13,6 +13,11 @@
 
 }
 
+.app__graphTitle{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .app__right{
   display: flex;
   flex-direction: column;
@@ -43,6 +48,7 @@ flex-grow: 1;
 .app__stats{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 990px){

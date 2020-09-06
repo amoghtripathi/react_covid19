@@ -62,8 +62,11 @@ function App() {
     .then(response =>  response.json())
     .then((data) => {
       setCountry(countryCode);
-      setCountryInfo(data);
-      setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+      setCountryInfo(data); 
+      countryCode === "worldwide"
+          ? setMapCenter([34.80746, -40.4796])
+          : setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+      //setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
       setMapZoom(4);
     });
   };
@@ -88,12 +91,15 @@ function App() {
 
           {/* 3 info boxes  */}
           <InfoBox 
+          isRed
+          active={casesType ==="cases"}
           onClick={e=> setCasesType("cases")}
             title="CoronaVirus Cases"
             cases={prettyPrintStat(countryInfo.todayCases)} 
             total={prettyPrintStat(countryInfo.cases)}/>
             
           <InfoBox 
+          active={casesType ==="recovered"}
           onClick={e=> setCasesType("recovered")}
             title="Recovered" 
             cases={prettyPrintStat(countryInfo.todayRecovered)} 
@@ -101,6 +107,8 @@ function App() {
             />
 
           <InfoBox 
+          isRed
+          active={casesType ==="deaths"}
           onClick={e=> setCasesType("deaths")}
             title="Deaths" 
             cases={prettyPrintStat(countryInfo.todayDeaths)} 
@@ -124,10 +132,10 @@ function App() {
           <h3>Live Cases by country</h3>
           
           <Table countries={tableData} />
-          <div className="push">
-          <h3>Worldwide new </h3>
+          <div>
+          <h3>Worldwide new {casesType} </h3>
           </div>
-          <LineGraph casesType={casesType}/>
+          <LineGraph className="app__grow" casesType={casesType}/>
 
         </CardContent>
 

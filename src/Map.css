@@ -10,3 +10,9 @@
 .map .leaflet-container{
     height: 100%;
 }
+
+.info-flag img{
+    width: 100px;
+    border-radius: 5px;
+    
+}

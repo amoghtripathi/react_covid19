@@ -3,13 +3,13 @@
 }
 
 .body{
-  background-color: red;
+  background-color: #f5f6fa;
 } 
 
 .app{
   display: flex;
   justify-content: space-evenly;
-  padding: 30px;
+  padding: 25px;
 
 }
 
@@ -21,7 +21,12 @@
 }
 
 .app__left{
-  flex: 0.7;
+  flex: 4;
+  margin: 30px;
+}
+
+.push{
+  margin:10px;
 }
 
 .app__stats{
@@ -32,5 +37,8 @@
 @media (max-width: 990px){
   .app{
     flex-direction: column;
+  }
+  .app__left{
+    padding: 5px;
   }
 }
